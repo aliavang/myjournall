@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const PostSchema = new mongoose.Schema({
-    title: {
+    entry: {
         type: String,
         required: true
     },
-    description: {
+    category: {
         type: String,
-        $ifNull: ["$description", "default" ]
+        $ifNull: ["$category", "general" ]
     },
     date: {
         type: Date,

@@ -17,8 +17,8 @@ router.get('/', async (req, res) => {
 // Submit post
 router.post('/', async (req, res) => {
     const post = new Post({
-        title: req.body.title,
-        description: req.body.description
+        entry: req.body.entry,
+        category: req.body.category
     });
     try{
         const savedPost = await post.save();
@@ -28,10 +28,10 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Specific post
-router.get('/:postId', async (req, res) => {
+// Specific category
+router.get('/:postCategory', async (req, res) => {
     try {
-        const post = await Post.findById(req.params.postId);
+        const post = await Post.find({category: req.params.postCategory});
         res.json(post);
     } catch(err) {
         res.json({ message: err });
@@ -48,14 +48,27 @@ router.delete('/:postId', async (req, res) => {
     }
 });
 
-// Update post
-router.patch(':/postId', async (req, res) => {
+// Update entry
+router.patch('/:postId', async (req, res) => {
     try {
         const updatedPost = await Post.updateOne(
             { _id: req.params.postId },
-            { $set: { title: req.body.title } }
+            { $set: { entry: req.body.entry } }
         );
         res.json(updatedPost);
+    } catch(err) {
+        res.json({ message: err });
+    }
+});
+
+// Update category
+router.patch('/:postId', async (req, res) => {
+    try{
+        const updatedCategory = await Post.updateOne(
+            { _id: req.params.postId },
+            { $set: { category: req.body.category} }
+        );
+        res.json(updatedCategory);
     } catch(err) {
         res.json({ message: err });
     }
